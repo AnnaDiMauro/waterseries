@@ -12,8 +12,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='complete example')
     parser.add_argument('fixture', metavar='FIXTURE', type=str, default="Washbasin",
                         help='the basename of csv timeseries to be analyzed')
-    parser.add_argument('--nocluster', dest='nocluster', action='store_true',
-                        default=False, help='skip the cluster stage')
     parser.add_argument('--nospline', dest='nospline', action='store_true', default=False,
                         help='skip the spline stage')
 

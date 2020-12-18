@@ -58,6 +58,21 @@ class TSFilter:
 
         return
 
+    '''
+    @staticmethod
+    def rename_usages(ts_dir):
+        ts_files = glob.glob(ts_dir + "/*.csv")
+        name_sequence = []
+        for ts_file in ts_files:
+            name_sequence.append(int(os.path.basename(ts_file)[:-4]))
+        sorted_sequence = np.sort(name_sequence)
+        for i in range(len(name_sequence)):
+            if i != sorted_sequence[i]:
+                os.rename(ts_dir + "/" + str(sorted_sequence[i])+".csv", ts_dir + "/" + str(i)+".csv")
+
+    '''
+
+
     @staticmethod
     def remove_outlayers(ts_dir,  outlayers):
 

@@ -29,8 +29,8 @@ if __name__ == "__main__":
 
     data_dir = 'data/csv_'+fixture
     if not args.nosplit:
-        if not os.path.isdir(data_dir + '/split'):
-            os.makedirs(data_dir + '/split')
+        if not os.path.isdir(data_dir + '/splits'):
+            os.makedirs(data_dir + '/splits')
 
         # This section detects usages and splits the original timeseries
         if args.splitalg is not None and args.splitalg == 'SimpleSplitter':
@@ -44,11 +44,11 @@ if __name__ == "__main__":
         # this method checks all splitted timeseries with a duration < 10 secs, consumption < 250 ml,
         # less than 7 samples
         # result is a dictionary
-        outlayers = TSFilter.outlayers(data_dir, 10, 250, 7)
+        outlayers = TSFilter.outlayers(data_dir+'/splits', 10, 250, 7)
         logging.info("identified " + str(len(outlayers)) + " outlayers")
         # here we delete those file which have been identified as outlayers
         if len(outlayers) > 0:
-            TSFilter.remove_outlayers(data_dir, outlayers)
+            TSFilter.remove_outlayers(data_dir+'/splits', outlayers)
 
     if not args.nomodel:
         # Compute usages

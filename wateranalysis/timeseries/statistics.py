@@ -54,7 +54,7 @@ class TSParameters:
         """
         ts_files = glob.glob(ts_dir+"/*.csv")
         data = []
-        for i in range(len(ts_files)):
+        for i in range(1,len(ts_files)):
             ts = np.genfromtxt(ts_dir+"/" + str(i)+".csv", delimiter=" ")
             duration = ts[-1, 0] - ts[0, 0]
             liters = TSParameters.liters(ts)

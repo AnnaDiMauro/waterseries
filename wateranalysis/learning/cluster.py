@@ -116,7 +116,7 @@ class TSCluster:
             os.mkdir(self.data_dir+"/cluster_"+str(i))
             selections.append(n_ts)
 
-        for i in range(0, len(clusters)):
+        for i in range(1, len(clusters)):
             if selections[clusters[i]] > 0:
                 selections[clusters[i]] -= 1
                 shutil.copyfile(self.data_dir+"/splits/"+str(int(individuals[i][0]))+".csv",

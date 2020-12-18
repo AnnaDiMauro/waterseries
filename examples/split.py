@@ -10,9 +10,9 @@ if __name__ == "__main__":
                         help='the basename of csv timeseries to be analyzed')
     args = parser.parse_args()
     fixture = args.fixture
-    if not os.path.isdir('data/splits/csv_'+fixture):
-        os.mkdir('data/splits/csv_'+fixture)
+    if not os.path.isdir('data/csv_'+fixture+'/splits'):
+        os.makedirs('data/csv_'+fixture+'/splits')
 
     # This section detects usages and splits the original timeseries
-    splitter = SimpleSplitter('data/feed_'+fixture+'.MYD.csv', 'data/splits/csv_'+fixture)
+    splitter = SimpleSplitter('data/feed_'+fixture+'.MYD.csv', 'data/csv_'+fixture+'/splits')
     splitter.split()

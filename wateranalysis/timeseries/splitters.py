@@ -1,7 +1,7 @@
 """
-simplesplit
+splitters
 =======================================
-This is a simple module that splits a timeseries
+This is a  module which implement different algorithms to split a timeseries
 """
 
 import pandas as pd
@@ -81,7 +81,7 @@ class Splitter:
                 if volume > vlim:
                     cont += 1
 
-                    np.savetxt(self.out_data_dir + '/split/' + str(cont) + '.csv', ts[start_event:end_event],
+                    np.savetxt(self.out_data_dir + '/splits/' + str(cont) + '.csv', ts[start_event:end_event],
                                delimiter=sep, fmt="%d")
 
                 end_event = 0
@@ -112,7 +112,7 @@ class Splitter:
                 if volume > vlim:
                     cont += 1
 
-                    np.savetxt(self.out_data_dir + '/split/' + str(cont) + '.csv', ts[start_event:end_event], delimiter=sep,
+                    np.savetxt(self.out_data_dir + '/splits/' + str(cont) + '.csv', ts[start_event:end_event], delimiter=sep,
                                fmt="%d")
 
                 end_event = 0
@@ -180,7 +180,7 @@ class SimpleSplitter:
                 cont += 1
 
                 df2 = pd.DataFrame(this_usage)
-                df2.to_csv(self.out_data_dir + '/split/' + str(cont) + '.csv', header=None, sep=sep, index=False,
+                df2.to_csv(self.out_data_dir + '/' + str(cont) + '.csv', header=None, sep=sep, index=False,
                            date_format='%d %d %f %d %d %d')
                 this_usage = []
             elif elemento[1] == 0 and len(this_usage) < 5:
