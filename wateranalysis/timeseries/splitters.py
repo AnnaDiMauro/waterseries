@@ -24,6 +24,13 @@ class Splitter:
         self.out_data_dir = out_dir
 
     def split(self, sep=' ', head=None, threshold=0):
+        """
+
+        :param sep:
+        :param head:
+        :param threshold:
+        :return:
+        """
         df = pd.read_csv(self.ts, sep=sep, header=head, names=['time', 'flow'])
         cont = 0
 
