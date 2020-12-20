@@ -325,8 +325,9 @@ class WeeklyUsage:
 
 class ModelBuilder:
     """
-    This class is used to build the desired model
+    This class i    out_data_dir = None is used to build the desired model
     """
+
     def __init__(self,  fixture, type, path="./data"):
         """
         The constructor of the class needs:

@@ -88,7 +88,7 @@ class Splitter:
                 if volume > vlim:
                     cont += 1
 
-                    np.savetxt(self.out_data_dir + '/splits/' + str(cont) + '.csv', ts[start_event:end_event],
+                    np.savetxt(self.out_data_dir + '/' + str(cont) + '.csv', ts[start_event:end_event],
                                delimiter=sep, fmt="%d")
 
                 end_event = 0
@@ -119,7 +119,7 @@ class Splitter:
                 if volume > vlim:
                     cont += 1
 
-                    np.savetxt(self.out_data_dir + '/splits/' + str(cont) + '.csv', ts[start_event:end_event], delimiter=sep,
+                    np.savetxt(self.out_data_dir + '/' + str(cont) + '.csv', ts[start_event:end_event], delimiter=sep,
                                fmt="%d")
 
                 end_event = 0

@@ -54,7 +54,7 @@ class TSParameters:
         """
         ts_files = glob.glob(ts_dir+"/*.csv")
         data = []
-        for i in range(1,len(ts_files)):
+        for i in range(0, len(ts_files)):
             ts = np.genfromtxt(ts_dir+"/" + str(i)+".csv", delimiter=" ")
             duration = ts[-1, 0] - ts[0, 0]
             liters = TSParameters.liters(ts)
@@ -89,7 +89,7 @@ class TSParameters:
             dd = date_time - dt.datetime(year, 1, 1)
             all_days[dd.days] += 1
         data = []
-        year =  dt.datetime.fromtimestamp(usages[0][0]).year
+        year = dt.datetime.fromtimestamp(usages[0][0]).year
         for i in range(len(all_days)):
             date_time = dt.date(year, 1, 1) + dt.timedelta(i)
             day_usage = [date_time.month, date_time.day, int(all_days[i]), date_time.weekday()]
@@ -97,7 +97,3 @@ class TSParameters:
         df2 = pd.DataFrame(data)
         df2.to_csv(outfile, header=None, sep=csv_sep, index=False,
                    date_format='%d %d %d %d')
-
-
-
-

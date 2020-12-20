@@ -2,7 +2,7 @@ import numpy as np
 import glob
 import os
 import logging
-
+import shutil
 
 class TSFilter:
 
@@ -15,7 +15,7 @@ class TSFilter:
 
     @staticmethod
     def outlayers(ts_dir, min_dur_const=0, min_lit_const=0, min_samp_const=1, sep=' '):
-        ts_files = glob.glob(ts_dir + '/*.csv')
+        ts_files = glob.glob(ts_dir + '/splits/*.csv')
         parameters = {}
         durations = []
         all_liters = []
@@ -58,9 +58,10 @@ class TSFilter:
 
         return
 
-    '''
+
     @staticmethod
     def rename_usages(ts_dir):
+        ts_dir += '/splits'
         ts_files = glob.glob(ts_dir + "/*.csv")
         name_sequence = []
         for ts_file in ts_files:
@@ -70,15 +71,17 @@ class TSFilter:
             if i != sorted_sequence[i]:
                 os.rename(ts_dir + "/" + str(sorted_sequence[i])+".csv", ts_dir + "/" + str(i)+".csv")
 
-    '''
+
 
 
     @staticmethod
     def remove_outlayers(ts_dir,  outlayers):
 
         logging.debug("deleting " + str(len(outlayers["i_min_samples"])) + "files")
+        if not os.path.isdir(ts_dir + '/outlayers'):
+            os.mkdir(ts_dir + '/outlayers')
         for i in outlayers["i_min_samples"]:
-            os.remove(ts_dir + "/" + str(i) + ".csv")
+            shutil.move(ts_dir + "/splits/" + str(i) + ".csv", ts_dir + "/outlayers/" + str(i) + ".csv")
 
 
 if __name__ == "__main__":
