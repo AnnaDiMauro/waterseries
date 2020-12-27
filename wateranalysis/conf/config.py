@@ -1,5 +1,8 @@
 
 class Configuration:
+    """
+    This class define a correspondence between the name of the fixture and the filename of its time-series
+    """
     facets_files = {
         'shower': 'feed_Shower.MYD.csv',
         "bidet": 'feed_Bidet.MYD.csv',

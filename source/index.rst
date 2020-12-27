@@ -19,30 +19,54 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-.. automodule:: timeseries.simplesplit
+.. automodule:: wateranalysis.timeseries.splitters
    :members:
    :show-inheritance:
 
-.. automodule:: timeseries.filters
+.. automodule:: wateranalysis.timeseries.filters
    :members:
    :show-inheritance:
 
-.. automodule:: timeseries.statistics
+.. automodule:: wateranalysis.timeseries.statistics
    :members:
    :show-inheritance:
 
-.. automodule:: learning.cluster
+.. automodule:: wateranalysis.models.statistics
    :members:
    :show-inheritance:
 
-.. automodule:: learning.randomforest
+.. automodule:: wateranalysis.models.spline
    :members:
    :show-inheritance:
 
-.. automodule:: models.builder
+.. automodule:: wateranalysis.learning.cluster
    :members:
    :show-inheritance:
 
-.. automodule:: examples.full
+.. automodule:: wateranalysis.learning.randomforest
+   :members:
+   :show-inheritance:
+
+.. automodule:: wateranalysis.simulation.generator
+   :members:
+   :show-inheritance:
+
+.. automodule:: wateranalysis.conf.config
+   :members:
+   :show-inheritance:
+
+.. automodule:: examples.split
+   :members:
+   :show-inheritance:
+
+.. automodule:: examples.model
+   :members:
+   :show-inheritance:
+
+.. automodule:: examples.learn
+   :members:
+   :show-inheritance:
+
+.. automodule:: examples.simulate
    :members:
    :show-inheritance:

@@ -1,13 +1,26 @@
+"""
+filters
+=======================================
+This module filters from a set of time-series overlays, whose features do not comply with some parameters
+"""
 import numpy as np
 import glob
 import os
 import logging
 import shutil
 
-class TSFilter:
 
+class TSFilter:
+    """
+    This class provide stati methods to filter overlays in a set of time-series
+    """
     @staticmethod
     def liters(ts):
+        """
+
+        :param ts: the time series of water flow samples [ml/s]
+        :return: the total amount of liters
+        """
         total_lits = 0
         for i in range(1, len(ts)):
             total_lits += ts[i, 1] * (ts[i, 0]-ts[i-1, 0])
@@ -15,6 +28,17 @@ class TSFilter:
 
     @staticmethod
     def outlayers(ts_dir, min_dur_const=0, min_lit_const=0, min_samp_const=1, sep=' '):
+        """
+        This method scan the csv files in a directory and identifies time series whose features to dont comply
+        with provided constraints
+        :param ts_dir:  the folder with csv fiels
+        :param min_dur_const: the minimal duration of time-sereis
+        :param min_lit_const: the minimum amount of liters of time-series
+        :param min_samp_const: the minimum number of samples pf a times-series
+        :param sep: the character used as separator in the csv file
+        :return: the method returns a dictionary that for each constraint  lists the basename of csv file which
+        violate the constraints
+        """
         ts_files = glob.glob(ts_dir + '/splits/*.csv')
         parameters = {}
         durations = []
@@ -44,6 +68,7 @@ class TSFilter:
 
     @staticmethod
     def check_fixtures(filename):
+
         # filename includes start datetime, duration, liters, month, hour, day
         usages = np.genfromtxt(filename, delimiter=" ")
         parameters = {}
@@ -61,6 +86,11 @@ class TSFilter:
 
     @staticmethod
     def rename_usages(ts_dir):
+        """
+        This  method rename the  n files in a directory in a way that their name corresponde to the first n numbers
+        :param ts_dir:  the folder containing the files
+        :return: None
+        """
         ts_dir += '/splits'
         ts_files = glob.glob(ts_dir + "/*.csv")
         name_sequence = []
@@ -76,19 +106,20 @@ class TSFilter:
 
     @staticmethod
     def remove_outlayers(ts_dir,  outlayers):
-
+        """
+        This method move the csv files listed in the outlayers dictionary to a subdire
+        :param ts_dir: the folder containing the csv files
+        :param outlayers: the dictionary listing the files to be moved
+        :return: None
+        """
         logging.debug("deleting " + str(len(outlayers["i_min_samples"])) + "files")
         if not os.path.isdir(ts_dir + '/outlayers'):
             os.mkdir(ts_dir + '/outlayers')
         for i in outlayers["i_min_samples"]:
             shutil.move(ts_dir + "/splits/" + str(i) + ".csv", ts_dir + "/outlayers/" + str(i) + ".csv")
+        for i in outlayers["i_min_liters"]:
+            shutil.move(ts_dir + "/splits/" + str(i) + ".csv", ts_dir + "/outlayers/" + str(i) + ".csv")
+        for i in outlayers["i_min_duration"]:
+            shutil.move(ts_dir + "/splits/" + str(i) + ".csv", ts_dir + "/outlayers/" + str(i) + ".csv")
 
 
-if __name__ == "__main__":
-    # checks =TSChecks.check_fixtures("data/washbasin_usage.csv")
-    # print(checks)
-    checks = TSFilter.outlayers("data/splits/csv_washbasin", 10, 250, 5)
-    print(checks)
-    print(len(checks["i_min_duration"]))
-    print(len(checks["i_min_liters"]))
-    print(len(checks["i_min_samples"]))
