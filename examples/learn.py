@@ -68,7 +68,7 @@ if __name__ == "__main__":
     '''
     clusters = np.genfromtxt(data_dir + '/' + fixture + ".clusters", delimiter=' ', dtype="i4")
     kn = np.max(clusters)
-    rf = randomforest.RandomForest(data_dir, "Washbasin", kn)
+    rf = randomforest.RandomForest(data_dir, args.fixture, kn)
 
     rf.compute_features(clusters)
     rf.evaluate()

@@ -441,36 +441,10 @@ class ModelBuilder:
         return True
 
     def get_dataframe(self, csv_sep=' '):
-        if self.utenza.lower() == "shower":
-            df = pd.read_csv(self.path + 'Shower_num_usage.csv', sep=csv_sep, header=None,
-                             names=['mese', 'giorno', 'utilizzi', 'day_week'])
-            df1 = pd.read_csv('./data/feed_Shower.MYD.csv', sep=csv_sep, header=None, names=['tempo', 'flusso'])
-            df2 = pd.read_csv(self.path + 'Shower_usage.csv', sep=csv_sep, header=None,
-                              names=['tempo_inizio', 'durata_utilizzo',
-                                     'litri', 'mese', 'ora', 'giorno'])
-        elif self.utenza.lower() == "bidet":
-            df = pd.read_csv(self.path + 'Bidet_num_usage.csv', sep=csv_sep, header=None,
-                             names=['mese', 'giorno', 'utilizzi', 'day_week'])
-            df1 = pd.read_csv('./data/feed_Bidet.MYD.csv', sep=csv_sep, header=None, names=['tempo', 'flusso'])
-            df2 = pd.read_csv(self.path + 'Bidet_usage.csv', sep=csv_sep, header=None,
-                              names=['tempo_inizio', 'durata_utilizzo',
-                                     'litri', 'mese', 'ora', 'giorno'])
-        elif self.utenza.lower() == "kitchen":
-            df = pd.read_csv(self.path + 'Kitchen_num_usage.csv', sep=csv_sep, header=None,
-                             names=['mese', 'giorno', 'utilizzi', 'day_week'])
-            df1 = pd.read_csv('./data/feed_Kitchenfaucet.MYD.csv', sep=csv_sep, header=None, names=['tempo', 'flusso'])
-            df2 = pd.read_csv(self.path + 'Kitchen_usage.csv', sep=csv_sep, header=None,
-                              names=['tempo_inizio', 'durata_utilizzo',
-                                     'litri', 'mese', 'ora', 'giorno'])
-        elif self.utenza.lower() == "washbasin":
-            df = pd.read_csv(self.path + self.utenza + '_num_usage.csv', sep=csv_sep, header=None,
-                             names=['mese', 'giorno', 'utilizzi', 'day_week'])
-            df1 = pd.read_csv('./data/feed_Washbasin.MYD.csv', sep=csv_sep, header=None, names=['tempo', 'flusso'])
-            df2 = pd.read_csv(self.path + self.utenza + '_usage.csv', sep=csv_sep, header=None,
-                              names=['tempo_inizio', 'durata_utilizzo',
-                                     'litri', 'mese', 'ora', 'giorno'])
-        else:
-            return None
-
+        df = pd.read_csv(self.path + self.utenza + '_num_usage.csv', sep=csv_sep, header=None,
+                         names=['mese', 'giorno', 'utilizzi', 'day_week'])
+        df1 = pd.read_csv('./data/feed_' + self.utenza + '.MYD.csv', sep=csv_sep, header=None, names=['tempo', 'flusso'])
+        df2 = pd.read_csv(self.path + self.utenza + '_usage.csv', sep=csv_sep, header=None,
+                          names=['tempo_inizio', 'durata_utilizzo',
+                                 'litri', 'mese', 'ora', 'giorno'])
         return df, df1, df2
-

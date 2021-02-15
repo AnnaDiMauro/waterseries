@@ -11,6 +11,7 @@ if __name__ == "__main__":
                         help='the basename of csv timeseries to be analyzed')
     parser.add_argument('--nosplit', dest='nosplit', action='store_true', default=False, help='skip the split stage')
     parser.add_argument('--nofilter', dest='nofilter', action='store_true', default=False, help='skip the filter stage')
+    parser.add_argument('--alg', dest='splitalg', default="SompleSplitter")
 
     args = parser.parse_args()
     fixture = args.fixture

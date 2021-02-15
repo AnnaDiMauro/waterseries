@@ -118,8 +118,10 @@ class TSFilter:
         for i in outlayers["i_min_samples"]:
             shutil.move(ts_dir + "/splits/" + str(i) + ".csv", ts_dir + "/outlayers/" + str(i) + ".csv")
         for i in outlayers["i_min_liters"]:
-            shutil.move(ts_dir + "/splits/" + str(i) + ".csv", ts_dir + "/outlayers/" + str(i) + ".csv")
+            if os.path.isfile(ts_dir + "/splits/" + str(i) + ".csv"):
+                shutil.move(ts_dir + "/splits/" + str(i) + ".csv", ts_dir + "/outlayers/" + str(i) + ".csv")
         for i in outlayers["i_min_duration"]:
-            shutil.move(ts_dir + "/splits/" + str(i) + ".csv", ts_dir + "/outlayers/" + str(i) + ".csv")
+            if os.path.isfile(ts_dir + "/splits/" + str(i) + ".csv"):
+                shutil.move(ts_dir + "/splits/" + str(i) + ".csv", ts_dir + "/outlayers/" + str(i) + ".csv")
 
 

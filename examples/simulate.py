@@ -6,6 +6,9 @@ import os
 import logging
 import argparse
 from  wateranalysis.models.spline import TSSPline
+import glob
+from matplotlib import pyplot as plt
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
@@ -42,6 +45,36 @@ if __name__ == "__main__":
     predict.close()
 
     clusters = randomforest.RandomForest.predict(data_dir+"/model.pkl", data_dir + '/' +fixture+".predict")
+    print(clusters)
+
+    userid = None
+
+    for i in range(1, len(runs)):
+        cluster_ts = np.genfromtxt(data_dir + "/" + str(int(clusters[i-1])) + "_spline.csv", delimiter=",")
+        start_time = runs[i][-2] * 3600 + runs[i][-1] * 60
+        cluster_ts[:, 0] += start_time
+        if userid is None:
+            userid = runs[i][0]
+            ts = cluster_ts
+        elif userid != runs[i][0]:
+            np.savetxt(data_dir +"/simulation/user_" + str(int(userid)) +"_predicted.csv", ts, fmt="%i,%f")
+            userid = runs[i][0]
+            ts = cluster_ts
+        else:
+            ts = np.vstack((ts, cluster_ts))
+    np.savetxt(data_dir + "/simulation/user_" + str(int(userid)) + "_predicted.csv", ts, fmt="%i,%f")
+
+
+users_files = glob.glob(data_dir + "/simulation/user_*predicted.csv")
+for user_file in users_files:
+    plt.figure()
+    ts =  np.genfromtxt(user_file, delimiter=",")
+    plt.plot(ts[:, 0], ts[:, 1], '-')
+    plt.savefig(user_file + ".png")
+
+
+
+
 
 
 
