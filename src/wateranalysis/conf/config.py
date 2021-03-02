@@ -1,4 +1,8 @@
-
+'''
+Conf
+=================================
+This module include global configuration parameters for the software
+'''
 class Configuration:
     """
     This class define a correspondence between the name of the fixture and the filename of its time-series

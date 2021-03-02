@@ -19,7 +19,6 @@
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
-  
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head><body>
@@ -28,8 +27,6 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <div class="section" id="welcome-to-wateranalysis-s-documentation">
@@ -40,10 +37,21 @@
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
 <li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
 <li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
 </ul>
+<span class="target" id="module-examples.split"></span><span class="target" id="module-examples.model"></span><span class="target" id="module-examples.learn"></span><span class="target" id="module-examples.simulate"></span><span class="target" id="module-wateranalysis.conf.config"></span><div class="section" id="conf">
+<h2>Conf<a class="headerlink" href="#conf" title="Permalink to this headline">¶</a></h2>
+<p>This module include global configuration parameters for the software</p>
+<dl class="class">
+<dt id="wateranalysis.conf.config.Configuration">
+<em class="property">class </em><code class="descclassname">wateranalysis.conf.config.</code><code class="descname">Configuration</code><a class="headerlink" href="#wateranalysis.conf.config.Configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class define a correspondence between the name of the fixture and the filename of its time-series</p>
+</dd></dl>
+
+</div>
 <span class="target" id="module-wateranalysis.timeseries.splitters"></span><div class="section" id="splitters">
 <h2>splitters<a class="headerlink" href="#splitters" title="Permalink to this headline">¶</a></h2>
 <p>This is a  module which implement different algorithms to split a timeseries</p>
@@ -295,6 +303,119 @@ number of occurrences.
 </dd></dl>
 
 </div>
+<span class="target" id="module-wateranalysis.models.statistics"></span><div class="section" id="id1">
+<h2>timeseries.statistics<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>This module define  models for describing  statistically the frequency of fixture usage.</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">wateranalysis.models.statistics.</code><code class="descname">GlobalUsage</code><span class="sig-paren">(</span><em>df</em>, <em>df1</em>, <em>df2</em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class define  a statistical distribution that is the same each day of the year.
+It define the probability distribution that a person open the fixture n times, the probability that that usage
+happens at a certain hour, the average duration and the average number of liters  of a usage.</p>
+<dl class="method">
+<dt>
+<code class="descname">compute_average</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Compute the average duration and the average amount of consumed water per usage
+:return: average duration, average consumption</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">compute_frequency</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Tis method compute the ratio between the number of days with n  usages and the total number of days
+:return: an array that contains this ratio for each  n value (according to the actual occurred usages)</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">compute_times</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>This method compute the ratio between the number of usages occured at a certain hour and the total
+number of occurrences.
+:return: an array with such ration for each hour of the day</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">wateranalysis.models.statistics.</code><code class="descname">ModelBuilder</code><span class="sig-paren">(</span><em>fixture</em>, <em>type</em>, <em>path='./data'</em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class i    out_data_dir = None is used to build the desired model</p>
+<dl class="method">
+<dt>
+<code class="descname">build_model</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Instantiate the model according to the type and the fixture.
+:return: The instantiated Model</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">wateranalysis.models.statistics.</code><code class="descname">MonthlyUsage</code><span class="sig-paren">(</span><em>df</em>, <em>df1</em>, <em>df2</em>, <em>month</em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class define  a statistical distribution that is the same each day of a specific month.
+It define the probability distribution that a person open the fixture n times in a day of a month,
+the probability that that usage  occurs at a certain hour,
+the average duration and the average number of liters  of a usage in a dey of specific month.</p>
+<dl class="method">
+<dt>
+<code class="descname">compute_average</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Compute the average duration and the average amount of consumed water per usage in a day of a specific month
+:return: average duration, average consumption</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">compute_frequency</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Tis method compute the ratio between the number of days with n  usages and the total number of days
+:return: an array that contains this ratio for each  n value (according to the actual occurred usages)</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">compute_times</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>This method compute the ratio between the number of usages occured at a certain hour and the total
+number of occurrences.
+:return: an array with such ration for each hour of the day</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">wateranalysis.models.statistics.</code><code class="descname">WeeklyUsage</code><span class="sig-paren">(</span><em>df</em>, <em>df1</em>, <em>df2</em>, <em>day_week</em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class define  a statistical distribution of fixture usage a specific week-day.
+It define the probability distribution that a person open the fixture n times in a day of the week,
+the probability that that usage  occurs at a certain hour,
+the average duration and the average number of liters  of a usage in a dey of specific day-week.</p>
+<dl class="method">
+<dt>
+<code class="descname">compute_average</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Compute the average duration and the average amount of consumed water per usage in a day of a specific month
+:return: average duration, average consumption</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">compute_frequency</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Tis method compute the ratio between the number of days with n  usages and the total number of days
+:return: an array that contains this ratio for each  n value (according to the actual occurred usages)</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">compute_times</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>This method compute the ratio between the number of usages occured at a certain hour and the total
+number of occurrences.
+:return: an array with such ration for each hour of the day</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <span class="target" id="module-wateranalysis.models.spline"></span><span class="target" id="module-wateranalysis.learning.cluster"></span><div class="section" id="learning-cluster">
 <h2>learning.cluster<a class="headerlink" href="#learning-cluster" title="Permalink to this headline">¶</a></h2>
 <p>This module compute the k-means clustering of time-series reperesented as an array of features</p>
@@ -413,18 +534,10 @@ hour, day_week, day_month
 </dd></dl>
 
 </div>
-<span class="target" id="module-wateranalysis.simulation.generator"></span><span class="target" id="module-wateranalysis.conf.config"></span><dl class="class">
-<dt id="wateranalysis.conf.config.Configuration">
-<em class="property">class </em><code class="descclassname">wateranalysis.conf.config.</code><code class="descname">Configuration</code><a class="headerlink" href="#wateranalysis.conf.config.Configuration" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>This class define a correspondence between the name of the fixture and the filename of its time-series</p>
-</dd></dl>
-
-<span class="target" id="module-examples.split"></span><span class="target" id="module-examples.model"></span><span class="target" id="module-examples.learn"></span><span class="target" id="module-examples.simulate"></span></div>
+<span class="target" id="module-wateranalysis.simulation.generator"></span><span class="target" id="module-wateranalysis.vis.ts_draw"></span><span class="target" id="module-wateranalysis.vis.clusterview"></span><span class="target" id="module-wateranalysis.vis.view_spline"></span></div>
 
 
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -433,10 +546,12 @@ hour, day_week, day_month
   <ul>
 <li><a class="reference internal" href="#">Welcome to wateranalysis’s documentation!</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a><ul>
+<li><a class="reference internal" href="#conf">Conf</a></li>
 <li><a class="reference internal" href="#splitters">splitters</a></li>
 <li><a class="reference internal" href="#filters">filters</a></li>
 <li><a class="reference internal" href="#statistiscs">statistiscs</a></li>
 <li><a class="reference internal" href="#timeseries-statistics">timeseries.statistics</a></li>
+<li><a class="reference internal" href="#id1">timeseries.statistics</a></li>
 <li><a class="reference internal" href="#learning-cluster">learning.cluster</a></li>
 <li><a class="reference internal" href="#learning-randomforest">learning.randomforest</a></li>
 </ul>
@@ -471,7 +586,7 @@ hour, day_week, day_month
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
       <a href="_sources/index.rst.txt"

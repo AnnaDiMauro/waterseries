@@ -1,11 +1,8 @@
-from wateranalysis.learning import cluster, randomforest
-# from wateranalysis.vis import clusterview
-from wateranalysis.simulation.generator import ProfileGenerator
+from wateranalysis.learning import randomforest, cluster
 import numpy as np
-import os
 import logging
 import argparse
-from  wateranalysis.models.spline import TSSPline
+from wateranalysis.models.spline import TSSPline
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)

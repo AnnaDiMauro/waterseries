@@ -7,7 +7,7 @@ from wateranalysis.timeseries.filters import TSFilter
 import logging
 from wateranalysis.timeseries.statistics import TSParameters
 import argparse
-from  wateranalysis.models.spline import TSSPline
+from wateranalysis.models.spline import TSSPline
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)

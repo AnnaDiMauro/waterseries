@@ -15,9 +15,31 @@ Welcome to wateranalysis's documentation!
 Indices and tables
 ==================
 
-* :ref:`genindex`
+
 * :ref:`modindex`
+* :ref:`genindex`
 * :ref:`search`
+
+.. automodule:: examples.split
+   :members:
+   :show-inheritance:
+
+.. automodule:: examples.model
+   :members:
+   :show-inheritance:
+
+.. automodule:: examples.learn
+   :members:
+   :show-inheritance:
+
+.. automodule:: examples.simulate
+   :members:
+   :show-inheritance:
+
+
+.. automodule:: wateranalysis.conf.config
+   :members:
+   :show-inheritance:
 
 .. automodule:: wateranalysis.timeseries.splitters
    :members:
@@ -28,6 +50,10 @@ Indices and tables
    :show-inheritance:
 
 .. automodule:: wateranalysis.timeseries.statistics
+   :members:
+   :show-inheritance:
+
+.. automodule:: wateranalysis.models.statistics
    :members:
    :show-inheritance:
 
@@ -51,22 +77,20 @@ Indices and tables
    :members:
    :show-inheritance:
 
-.. automodule:: wateranalysis.conf.config
+.. automodule:: wateranalysis.vis.ts_draw
    :members:
    :show-inheritance:
 
-.. automodule:: examples.split
+.. automodule:: wateranalysis.vis.clusterview
    :members:
    :show-inheritance:
 
-.. automodule:: examples.model
+.. automodule:: wateranalysis.vis.view_spline
    :members:
    :show-inheritance:
 
-.. automodule:: examples.learn
-   :members:
-   :show-inheritance:
 
-.. automodule:: examples.simulate
-   :members:
-   :show-inheritance:
+
+
+
+
