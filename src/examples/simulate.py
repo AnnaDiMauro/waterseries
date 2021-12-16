@@ -88,8 +88,6 @@ if __name__ == "__main__":
     if len(runs.shape) == 2:
         predict = open(data_dir + '/' + fixture + ".predict", "w")
         for i in range(1, len(runs)):
-            print(i)
-            print("Nan," + str(int(runs[i][3])) + ",0,10\n")
             predict.write("Nan," + str(int(runs[i][3])) + ",0,10\n")
         predict.flush()
         predict.close()

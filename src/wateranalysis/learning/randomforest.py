@@ -140,7 +140,11 @@ class RandomForest:
         """
         clf = joblib.load(model_file)
         dataset = np.genfromtxt(file_items, delimiter=",")
-        temp_ds = dataset[:, 1:]
+        if len(dataset.shape) > 1:
+            temp_ds = dataset[:, 1:]
+        else:
+            temp_ds = [dataset[1:]]
+
         result = clf.predict(temp_ds)
         return result
 
