@@ -82,7 +82,7 @@ if __name__ == "__main__":
         np.savetxt(data_dir + '/' + fixture+".clusters", clusters)
 
         # ten timeseries per cluster are saved in different folders
-        cluster.mk_cluster_folders(kn, clusters, 10)
+        cluster.mk_cluster_folders(kn, clusters, 50)
 
         # plot all timeseries, in terms of features,  with a different color per cluster
         # (first two parameters: duration and liters)

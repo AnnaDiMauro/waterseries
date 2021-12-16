@@ -74,78 +74,86 @@ if __name__ == "__main__":
     mg = ProfileGenerator(data_dir, data_dir + "/simulation")
     if args.smodel == "global":
         # GLOBAL
-        mg.global_model(fixture, args.users)
-    elif args.model == "monthly":
-        mg.monthly_model(fixture, args.month, args.users)
+        simulation_file = mg.global_model(fixture, args.users)
+    elif args.smodel == "monthly":
+        simulation_file = mg.monthly_model(fixture, args.month, args.users)
     else:
-        mg.weekly_model(fixture,args.weekday, args.users)
+        simulation_file = mg.weekly_model(fixture,args.weekday, args.users)
 
-    simulation_file = data_dir + '/simulation/simulatedusages_' + fixture + '.csv'
+    #simulation_file = data_dir + '/simulation/simulatedusages_'+ fixture + '.csv'
     runs = np.genfromtxt(simulation_file, delimiter=" ")
 
-    predict = open(data_dir + '/' + fixture+".predict", "w")
 
-    for i in range(1, len(runs)):
-        predict.write("Nan," + str(int(runs[i][3])) + ",0,10\n")
-    predict.close()
 
-    clusters = randomforest.RandomForest.predict(data_dir + "/model.pkl", data_dir + '/' + fixture + ".predict")
-    # print(clusters)
+    if len(runs.shape) == 2:
+        predict = open(data_dir + '/' + fixture + ".predict", "w")
+        for i in range(1, len(runs)):
+            print(i)
+            print("Nan," + str(int(runs[i][3])) + ",0,10\n")
+            predict.write("Nan," + str(int(runs[i][3])) + ",0,10\n")
+        predict.flush()
+        predict.close()
 
-    userid = None
 
-    for i in range(1, len(runs)):
-        cluster_ts = np.genfromtxt(data_dir + "/" + str(int(clusters[i-1])) + "_spline.csv", delimiter=",")
-        cluster_ts = np.vstack((cluster_ts, [cluster_ts[-1, 0] + 1, 0]))
-        cluster_ts = np.vstack(([cluster_ts[0, 0] - 1, 0], cluster_ts))
-        start_time = runs[i][-2] * 3600 + runs[i][-1] * 60
-        cluster_ts[:, 0] += start_time
-        if userid is None:
-            userid = runs[i][0]
-            ts = cluster_ts
-        elif userid != runs[i][0]:
-            np.savetxt(data_dir +"/simulation/user_" + str(int(userid)) +"_predicted.csv", ts, fmt="%i,%f")
-            userid = runs[i][0]
-            ts = cluster_ts
-        else:
-            if ts[0, 0] < cluster_ts[0, 0]:
-                shift_time = ts[-1, 0] - cluster_ts[0, 0]
-                if shift_time > 0:
-                    cluster_ts[:, 0] += shift_time + 1
-                ts = np.vstack((ts, cluster_ts))
+        clusters = randomforest.RandomForest.predict(data_dir + "/model.pkl", data_dir + '/' + fixture + ".predict")
+        # print(clusters)
+
+        userid = None
+
+        for i in range(1, len(runs)):
+            cluster_ts = np.genfromtxt(data_dir + "/" + str(int(clusters[i-1])) + "_spline.csv", delimiter=",")
+            cluster_ts = np.vstack((cluster_ts, [cluster_ts[-1, 0] + 1, 0]))
+            cluster_ts = np.vstack(([cluster_ts[0, 0] - 1, 0], cluster_ts))
+            start_time = runs[i][-2] * 3600 + runs[i][-1] * 60
+            cluster_ts[:, 0] += start_time
+            if userid is None:
+                userid = runs[i][0]
+                ts = cluster_ts
+            elif userid != runs[i][0]:
+                np.savetxt(data_dir +"/simulation/user_" + str(int(userid)) +"_predicted.csv", ts, fmt="%i,%f")
+                userid = runs[i][0]
+                ts = cluster_ts
             else:
-                shift_time = cluster_ts[-1, 0] - ts[0, 0]
-                if shift_time > 0:
-                    ts[:, 0] += shift_time + 1
-                ts = np.vstack((cluster_ts, ts))
-    np.savetxt(data_dir + "/simulation/user_" + str(int(userid)) + "_predicted.csv", ts, fmt="%i,%f")
+                if ts[0, 0] < cluster_ts[0, 0]:
+                    shift_time = ts[-1, 0] - cluster_ts[0, 0]
+                    if shift_time > 0:
+                        cluster_ts[:, 0] += shift_time + 1
+                    ts = np.vstack((ts, cluster_ts))
+                else:
+                    shift_time = cluster_ts[-1, 0] - ts[0, 0]
+                    if shift_time > 0:
+                        ts[:, 0] += shift_time + 1
+                    ts = np.vstack((cluster_ts, ts))
+        np.savetxt(data_dir + "/simulation/user_" + str(int(userid)) + "_predicted.csv", ts, fmt="%i,%f")
 
 
-    users_files = glob.glob(data_dir + "/simulation/user_*predicted.csv")
+        users_files = glob.glob(data_dir + "/simulation/user_*predicted.csv")
 
-    # generate image
-    i = 1
-    ts_tot = None
-    for user_file in users_files:
+        # generate image
+        i = 1
+        ts_tot = None
+        for user_file in users_files:
 
-        ts = np.genfromtxt(user_file, delimiter=",")
-        plt.plot(ts[:, 0], ts[:, 1], '-', label="user_" + str(i))
-        i += 1
+            ts = np.genfromtxt(user_file, delimiter=",")
+            plt.plot(ts[:, 0], ts[:, 1], '-', label="user_" + str(i))
+            i += 1
 
-    plt.ylabel("water flow (ml/s)")
-    plt.xlabel("hour")
-    # plt.xlim(5.5*3600, 7.5*3600)
-    plt.gcf().autofmt_xdate()
-    plt.gca().xaxis.set_major_locator(mtick.FixedLocator(ts[:,0]))
-    loc = mtick.MaxNLocator(12)  # this locator puts ticks at regular intervals
-    plt.gca().xaxis.set_major_locator(loc)
-    plt.gca().xaxis.set_major_formatter(
-        mtick.FuncFormatter(lambda pos, _: time.strftime("%H:%M", time.localtime(pos)))
-        )
+        plt.ylabel("water flow (ml/s)")
+        plt.xlabel("hour")
+        # plt.xlim(5.5*3600, 7.5*3600)
+        plt.gcf().autofmt_xdate()
+        plt.gca().xaxis.set_major_locator(mtick.FixedLocator(ts[:,0]))
+        loc = mtick.MaxNLocator(12)  # this locator puts ticks at regular intervals
+        plt.gca().xaxis.set_major_locator(loc)
+        plt.gca().xaxis.set_major_formatter(
+            mtick.FuncFormatter(lambda pos, _: time.strftime("%H:%M", time.localtime(pos)))
+            )
 
-    plt.tight_layout()
-    plt.legend(loc="upper right")
-    plt.savefig(data_dir + "/simulation/allusers.png")
+        plt.tight_layout()
+        plt.legend(loc="upper right")
+        plt.savefig(data_dir + "/simulation/allusers.png")
+    else:
+        print("nor usages to process")
 
 
 
