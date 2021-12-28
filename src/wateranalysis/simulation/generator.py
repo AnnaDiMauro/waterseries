@@ -67,10 +67,12 @@ class ProfileGenerator:
                 if json_model["month"][i]["month"] == month:
                     n_usages = json_model["month"][i]["parameters"]["daily_usage"]
                     month = json_model["month"][i]["month"]
+                    time_dis = json_model["month"][i]["parameters"]["time_distribution"]
+
             if i == len(json_model["month"]):
                 return -1
 
-        month_index = i
+
         id_utente = []
         id_utilizzo = []
         ora_utilizzo = []
@@ -86,12 +88,13 @@ class ProfileGenerator:
                 if probability >= r:
 
                     print("l'utente ", i, "usa ", key, "volte l'utenza")
-                    time_dis = json_model["month"][month_index]["parameters"]["time_distribution"]
+
+
                     for k in range(int(key)):
                         r = random.uniform(0, 1)
 
                         minutes = random.randrange(60)
-                        while minutes in min_utilizzo:
+                        while minutes in min_utilizzo and len(min_utilizzo) < 60:
                             minutes = random.randrange(60)
                         min_utilizzo.append(minutes)
 

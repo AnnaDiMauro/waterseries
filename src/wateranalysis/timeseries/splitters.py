@@ -56,8 +56,10 @@ class Splitter:
         vlim = 0.125  # volume in [l]
 
         for i in range(2, len(ts) - 1):
-
-            ratioq = (np.mean(Q[i - 2:i + 3]) / Q[i])
+            if Q[i] == 0:
+                ratioq = 0
+            else:
+                ratioq = (np.mean(Q[i - 2:i + 3]) / Q[i])
 
             if timegap[i] <= timelim and Q[i] > Qlim:
 

@@ -135,7 +135,7 @@ class MonthlyUsage:
 
     def compute_frequency(self):
         """
-        Tis method compute the ratio between the number of days with n  usages and the total number of days
+        This method computes the ratio between the number of days with n  usages and the total number of days
         :return: an array that contains this ratio for each  n value (according to the actual occurred usages)
         """
         self.df = self.df[self.df['mese'] == self.month]
@@ -154,7 +154,41 @@ class MonthlyUsage:
 
     def compute_times(self):
         """
-        This method compute the ratio between the number of usages occured at a certain hour and the total
+        This method compute the ratio between the number of usages occurred at a certain hour and the total
+        number of occurrences.
+        :return: an array with such ration for each hour of the day
+        """
+        df1 = self.df2[self.df2['mese'] == self.month]
+
+        vet_conteggi = []
+        fascia_oraria = ['00-01', '01-02', '02-03', '03-04', '04-05', '05-06', '06-07', '07-08', '08-09', '09-10',
+                         '10-11',
+                         '11-12', '12-13', '13-14', '14-15', '15-16', '16-17', '17-18', '18-19', '19-20', '20-21',
+                         '21-22',
+                         '22-23', '23-00']
+        for i in range(0, 24):  # ORE
+            df2 = df1[df1['ora'] == i]
+
+            vet_conteggi.append(len(df2))
+        data = {'fascia oraria': fascia_oraria,
+                '#utilizzi': vet_conteggi}
+        df3 = pd.DataFrame(data)
+
+        dim = len(df3)
+        num_utilizzi = df3['#utilizzi'].sum()
+        time_distribution = []
+        for j in range(0, dim):
+            if num_utilizzi == 0:
+                temp = 0
+            else:
+                temp = df3.iloc[j, 1] / num_utilizzi
+            time_distribution.append(temp)
+            self.time_distribution = time_distribution
+        return time_distribution
+
+    def compute_times_old(self):
+        """
+        This method compute the ratio between the number of usages occurred at a certain hour and the total
         number of occurrences.
         :return: an array with such ration for each hour of the day
         """
@@ -168,11 +202,13 @@ class MonthlyUsage:
                          '21-22',
                          '22-23', '23-00']
         for i in range(0, 24):  # ORE
+
             if i < 23:
                 df2 = self.df1[(self.df1['tempo'].dt.hour >= i) & (self.df1['tempo'].dt.hour < i + 1)]
             elif i == 23:
                 df2 = self.df1[self.df1['tempo'].dt.hour >= i]
             for elemento in range(0, len(df2)-1):
+                print(df2.iloc[elemento], df2.iloc[elemento+1])
                 if (df2.iloc[elemento, 1] == 0) and (df2.iloc[elemento + 1, 1] != 0):
                     cont += 1
             vet_conteggi.append(cont)
@@ -185,7 +221,10 @@ class MonthlyUsage:
         num_utilizzi = df3['#utilizzi'].sum()
         time_distribution = []
         for j in range(0, dim):
-            temp = df3.iloc[j, 1] / num_utilizzi
+            if num_utilizzi == 0:
+                temp = 0
+            else:
+                temp = df3.iloc[j, 1] / num_utilizzi
             time_distribution.append(temp)
             self.time_distribution = time_distribution
         return time_distribution
@@ -197,10 +236,14 @@ class MonthlyUsage:
         """
         df1 = self.df2[self.df2['mese'] == self.month]
         dim = len(df1)
-        # Calcoliamo durata media
-        average_secs = (df1['durata_utilizzo'].sum()) / dim
-        # Calcoliamo media consumi
-        average_liters = (df1['litri'].sum()) / dim
+        if dim == 0:
+            average_secs = 0
+            average_liters = 0
+        else:
+            # Calcoliamo durata media
+            average_secs = (df1['durata_utilizzo'].sum()) / dim
+            # Calcoliamo media consumi
+            average_liters = (df1['litri'].sum()) / dim
 
         self.average_secs = average_secs
         self.average_liters = average_liters
@@ -298,7 +341,10 @@ class WeeklyUsage:
         num_utilizzi = df3['#utilizzi'].sum()
         time_distribution = []
         for j in range(0, dim):
-            temp = df3.iloc[j, 1] / num_utilizzi
+            if num_utilizzi == 0:
+                temp = 0
+            else:
+                temp = df3.iloc[j, 1] / num_utilizzi
             time_distribution.append(temp)
             self.time_distribution = time_distribution
         return time_distribution
@@ -446,5 +492,5 @@ class ModelBuilder:
         df1 = pd.read_csv('./data/feed_' + self.utenza + '.MYD.csv', sep=csv_sep, header=None, names=['tempo', 'flusso'])
         df2 = pd.read_csv(self.path + self.utenza + '_usage.csv', sep=csv_sep, header=None,
                           names=['tempo_inizio', 'durata_utilizzo',
-                                 'litri', 'mese', 'ora', 'giorno'])
+                                 'litri', 'mese', 'ora', 'giorno', 'max_flow'])
         return df, df1, df2
