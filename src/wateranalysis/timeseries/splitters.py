@@ -10,7 +10,6 @@ import scipy.integrate as integrate
 
 
 class Splitter:
-
     ts = None
     out_data_dir = None
 
@@ -47,9 +46,11 @@ class Splitter:
         for k in range(0, len(ts) - 1):
             timegap[k + 1] = ts[k + 1, 0] - ts[k, 0]
 
-        timelim = 4
+        timelim = 60
 
-        Qlim = 6
+        min_elm = 1
+
+        Qlim = 0
 
         idx = []
 
@@ -68,9 +69,8 @@ class Splitter:
             elif timegap[i] > timelim and timegap[i] < 90 and Q[i] > Qlim and ratioq > 0.9 and ratioq < 1.1:
 
                 idx.append(i - 1)
-
-            elif timegap[i] > timelim and len(
-                    idx) > 3:  # per ogni time series e' richiesto un numero di elementi maggiore di 3
+            # per ogni time series e' richiesto un numero di elementi maggiore di 3
+            elif timegap[i] > timelim and len(idx) > min_elm:
 
                 if Q[idx[0]] > 0:
                     start_event = idx[0]
@@ -99,8 +99,8 @@ class Splitter:
 
                 idx = []
 
-            elif timegap[i] <= timelim and Q[i] <= Qlim and len(
-                    idx) > 3:  # per ogni time series e' richiesto un numero di elementi maggiore di 3
+            elif timegap[i] <= timelim and Q[i] <= Qlim and len(idx) > min_elm:
+                # per ogni time series e' richiesto un numero di elementi maggiore di 3
 
                 if Q[idx[0]] > 0:
 
@@ -130,7 +130,7 @@ class Splitter:
 
                 idx = []
 
-            elif timegap[i] > timelim and len(idx) <= 3:
+            elif timegap[i] > timelim and len(idx) <= min_elm:
 
                 end_event = 0
 
@@ -138,7 +138,7 @@ class Splitter:
 
                 idx = []
 
-            elif timegap[i] <= timelim and Q[i] <= Qlim and len(idx) <= 3:
+            elif timegap[i] <= timelim and Q[i] <= Qlim and len(idx) <= min_elm:
 
                 end_event = 0
 

@@ -36,7 +36,7 @@ class ProfileGenerator:
                     for k in range(int(key)):
                         r = random.uniform(0, 1)
                         minutes = random.randrange(60)
-                        while minutes in min_utilizzo:
+                        while minutes in min_utilizzo and len(min_utilizzo) < 60:
                             minutes = random.randrange(60)
                         min_utilizzo.append(minutes)
 
@@ -134,6 +134,7 @@ class ProfileGenerator:
         id_utilizzo = []
         giorno_utilizzo = []
         ora_utilizzo = []
+        min_utilizzo = []
         for i in range(0, n_users):
             random.seed()
             r = random.uniform(0, 1)
@@ -146,7 +147,15 @@ class ProfileGenerator:
                     print("l'utente ", i, "usa ", key, "volte l'utenza")
                     time_dis = json_model["weekday"][weekday_index]["parameters"]["time_distribution"]
                     for k in range(int(key)):
+
                         random.seed()
+
+                        minutes = random.randrange(60)
+                        while minutes in min_utilizzo and len(min_utilizzo) < 60:
+                            minutes = random.randrange(60)
+                        min_utilizzo.append(minutes)
+
+
                         r = random.uniform(0, 1)
                         # min = random.randrange(60)  # I minuti e le ore possono anche ripetersi
                         j = 0
@@ -162,8 +171,8 @@ class ProfileGenerator:
                         giorno_utilizzo.append(giorno)
                         ora_utilizzo.append(j)
                     break
-        df = pd.DataFrame(list(zip(id_utente, id_utilizzo, giorno_utilizzo, ora_utilizzo)),
-                          columns=['id_utente', 'id_utilizzo', 'giorno_utilizzo', 'ora di utilizzo'])
+        df = pd.DataFrame(list(zip(id_utente, id_utilizzo, giorno_utilizzo, ora_utilizzo, min_utilizzo)),
+                          columns=['id_utente', 'id_utilizzo', 'giorno_utilizzo', 'ora_di_utilizzo', 'minuti'])
         df.to_csv(self.out_path + '/utilizzi_weekly_' + str(giorno) + "_" + fixture + '.csv', index=False, header=1, sep=' ')
         return self.out_path + '/utilizzi_weekly_' + str(giorno) + "_" + fixture + '.csv'
 
